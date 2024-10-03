@@ -1,6 +1,6 @@
 ---
 title: "Lab 2: Exploring Rodents with `ggplot2`"
-author: "Your name here!"
+author: "Sylvia Du"
 format: html
 editor: source
 embed-resources: true
@@ -62,6 +62,9 @@ In the code chunk below, load in the packages necessary for your analysis. You s
 
 ```{r}
 #| label: setup
+install.packages("tidyverse")
+install.packages("here")
+library(tidyverse)
 
 ```
 
@@ -102,15 +105,22 @@ represent:
 ```{r}
 #| label: load-data
 
+library(here)
+surveys <- read_csv("data/surveys.csv")
+
+#https://www.rdocumentation.org/packages/dplyr/versions/1.0.10/topics/glimpse
+glimpse(surveys)
 ```
 
 **2. What are the dimensions (# of rows and columns) of these data?**
 
 <!-- You can either write code here or in the code chunk for #1, but I **must** see the code you used to address this question!  -->
+30,463 rows and 15 columns
 
 **3. What are the data types of the variables in this dataset?**
 
 <!-- You can either write code here or in the code chunk for #1, but I **must** see the code you used to address this question!  -->
+record_id, month, day, year, plot_id, species_id, sex, hindfoot_length, weight, date, days_of_week, plot_type, genus, species, taxa
 
 # Exploratory Data Analysis with **`ggplot2`**
 
@@ -138,7 +148,18 @@ the $x$-axis) and `hindfoot_length` (on the $y$-axis).**
 
 ```{r}
 #| label: scatterplot
-
+ggplot(data = surveys,
+       mapping = aes(
+         x = weight, 
+         y = hindfoot_length, 
+         alpha = 0.1)
+      )+
+  geom_point() +
+  facet_wrap('species') + 
+  labs(x = "Weight (grams)", 
+       y = "",
+       title = "Rodents Comparision by Species", 
+       subtitle = "The relationship of a Rodent's Weight and Hindfoot Length Based On Species")
 ```
 
 We can see there are **a lot** of points plotted on top of each other. Let's try and modify this plot to extract more information from it.
@@ -168,7 +189,21 @@ It takes a larger cognitive load to read text that is rotated. It is common prac
 
 ```{r}
 #| label: boxplot
-
+ggplot(data = surveys,
+       mapping = aes(
+         x = species,
+         y = weight,
+         alpha = 0.01,
+         )
+      ) +
+  geom_boxplot(outliers = FALSE
+               ) + 
+  geom_jitter(color = 'steelblue'
+              ) + 
+  labs(x = "Species", 
+       y = "Weight",
+       title = "Rodents Comparision by Species", 
+       subtitle = "The relationship of a Rodent's Weight and Hindfoot Length Based On Species")
 
 ```
 
