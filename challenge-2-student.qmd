@@ -4,8 +4,10 @@ author: "Sylvia Du!"
 format: html
 editor: source
 embed-resources: true
+self-contained: true
 code-tools: true
-
+echo: true
+eval: false
 ---
 
 For this week's Challenge, you will have three different options to explore.

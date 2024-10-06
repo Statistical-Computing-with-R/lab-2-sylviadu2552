@@ -4,6 +4,7 @@ author: "Sylvia Du"
 format: html
 editor: source
 embed-resources: true
+self-contained: true
 code-tools: true
 echo: true
 eval: false
@@ -190,21 +191,24 @@ It takes a larger cognitive load to read text that is rotated. It is common prac
 ## Ridgeline Plot
 
 ```{r}
-#| label: Ridgeline Plot
+
 ggplot(data = surveys,
        mapping = aes(
-         x = weight,
-         y = species,
-         fill = species
+         x = species,
+         y = weight,
+         alpha = 0.01,
          )
       ) +
-  #https://r-graph-gallery.com/294-basic-ridgeline-plot.html for ridgeplot reference
-  geom_density_ridges() + 
-  labs(x = "Weight", 
-       y = "Species",
+  geom_boxplot(outliers = FALSE
+               ) + 
+  geom_jitter(color = 'steelblue'
+              ) + 
+  labs(x = "Species", 
+       y = "Weight",
        title = "Rodents Comparision by Species", 
-       subtitle = "The relationship of a Rodent's Weight and Hindfoot Length Based On Species")
-
+       subtitle = "The relationship of a Rodent's Weight and Hindfoot Length Based On Species") +
+  #https://ggplot2.tidyverse.org/reference/theme.html for reference
+  theme(axis.text.x = element_text(angle = 45))
 ```
 
 **10. Create side-by-side boxplots to visualize the distribution of weight within each species.**
