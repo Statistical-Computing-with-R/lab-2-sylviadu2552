@@ -1,10 +1,11 @@
 ---
 title: "Challenge 2: Spicing things up with ggplot2"
-author: "Add your name!"
+author: "Sylvia Du!"
 format: html
 editor: source
 embed-resources: true
 code-tools: true
+
 ---
 
 For this week's Challenge, you will have three different options to explore.
@@ -36,6 +37,24 @@ for side-by-side density plots using `geom_density()`. Instead, we will need to
 make use of the `ggridges` package to create side-by-side density (ridge) plots.
 
 > **For this challenge you are to change your boxplots to ridge plots. You will need to install the `ggridges` package and explore the `geom_density_ridges()` function.**
+
+```{r}
+#| label: Ridgeline Plot
+ggplot(data = surveys,
+       mapping = aes(
+         x = weight,
+         y = species,
+         fill = species
+         )
+      ) +
+  #https://r-graph-gallery.com/294-basic-ridgeline-plot.html for ridgeplot reference
+  geom_density_ridges() + 
+  labs(x = "Weight", 
+       y = "Species",
+       title = "Rodents Comparision by Species", 
+       subtitle = "The relationship of a Rodent's Weight and Hindfoot Length Based On Species")
+
+```
 
 # Spicy: Exploring Color Themes
 

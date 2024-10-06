@@ -5,6 +5,8 @@ format: html
 editor: source
 embed-resources: true
 code-tools: true
+echo: true
+eval: false
 ---
 
 # Part 1: GitHub Workflow
@@ -63,9 +65,9 @@ In the code chunk below, load in the packages necessary for your analysis. You s
 ```{r}
 #| label: setup
 install.packages("tidyverse")
-install.packages("here")
 library(tidyverse)
-
+install.packages("ggridges")
+library(ggridges)
 ```
 
 # Data Context
@@ -108,7 +110,7 @@ represent:
 library(here)
 surveys <- read_csv("data/surveys.csv")
 
-#https://www.rdocumentation.org/packages/dplyr/versions/1.0.10/topics/glimpse
+#https://www.rdocumentation.org/packages/dplyr/versions/1.0.10/topics/glimpse for reference
 glimpse(surveys)
 ```
 
@@ -185,23 +187,21 @@ It takes a larger cognitive load to read text that is rotated. It is common prac
 
 <!-- Continue to modify the plot you originally created for question 4! -->
 
-## Boxplots
+## Ridgeline Plot
 
 ```{r}
-#| label: boxplot
+#| label: Ridgeline Plot
 ggplot(data = surveys,
        mapping = aes(
-         x = species,
-         y = weight,
-         alpha = 0.01,
+         x = weight,
+         y = species,
+         fill = species
          )
       ) +
-  geom_boxplot(outliers = FALSE
-               ) + 
-  geom_jitter(color = 'steelblue'
-              ) + 
-  labs(x = "Species", 
-       y = "Weight",
+  #https://r-graph-gallery.com/294-basic-ridgeline-plot.html for ridgeplot reference
+  geom_density_ridges() + 
+  labs(x = "Weight", 
+       y = "Species",
        title = "Rodents Comparision by Species", 
        subtitle = "The relationship of a Rodent's Weight and Hindfoot Length Based On Species")
 
@@ -250,6 +250,23 @@ Some people (and journals) prefer for boxplots to be stacked with a specific ori
 
 ```{r}
 #| label: rotated-boxplot
+ggplot(data = surveys,
+       mapping = aes(
+         x = weight,
+         y = species,
+         alpha = 0.01,
+         )
+      ) +
+  geom_boxplot(outliers = FALSE
+               ) + 
+  geom_jitter(color = 'steelblue'
+              ) + 
+  labs(x = "Weight", 
+       y = "Species",
+       title = "Rodents Comparision by Species", 
+       subtitle = "The relationship of a Rodent's Weight and Hindfoot Length Based On Species") +
+  #https://ggplot2.tidyverse.org/reference/theme.html for reference
+  theme(axis.text.y = element_text(angle = 45))
 
 ```
 
@@ -283,13 +300,13 @@ might want to look up the help documentation for `aov()`.
 ```{r}
 #| label: anova
 
-species_mod <- aov()
+species_mod <- aov(weight~species, data = surveys)
 
 summary(species_mod)
 ```
 
 **18. Based on the results of the ANOVA F-test, draw a conclusion in context of the hypotheses. Make sure to cite appropriate output from above.**
-
+Because our P-Value of less than 2e-16 is much smaller than a significant level of 0.05, as well as a high F-Value of 19916, we reject the null hypothesis. There is statistically significant evidence that at least one rodent species has a different population mean weight.
 
 # Lab 2 Submission
 
