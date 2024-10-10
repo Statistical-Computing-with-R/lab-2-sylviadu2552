@@ -6,8 +6,10 @@ editor: source
 embed-resources: true
 self-contained: true
 code-tools: true
-echo: true
-eval: false
+cold_folding: true
+execute: 
+  echo: true
+  eval: true
 ---
 
 # Part 1: GitHub Workflow
@@ -65,10 +67,8 @@ In the code chunk below, load in the packages necessary for your analysis. You s
 
 ```{r}
 #| label: setup
-install.packages("tidyverse")
+
 library(tidyverse)
-install.packages("ggridges")
-library(ggridges)
 ```
 
 # Data Context
@@ -104,14 +104,13 @@ represent:
 # Reading the Data into `R`
 
 **1. Using the `read_csv()` function, write the code necessary to load in the `surveys.csv` dataset (stored in the data folder). For simplicity, name the data `surveys`.**
-
 ```{r}
 #| label: load-data
-
 library(here)
+ 
 surveys <- read_csv("data/surveys.csv")
 
-#https://www.rdocumentation.org/packages/dplyr/versions/1.0.10/topics/glimpse for reference
+#https://www.rdocumentation.org/packages/dplyr/versions/1.0.10/topics/glimpse
 glimpse(surveys)
 ```
 
@@ -133,14 +132,6 @@ in this fashion allows for extensive flexibility and customization of plots.
 To build a `ggplot()`, we will use the following basic template that can be used
 for different types of plots:
 
-```{r}
-#| eval: false
-#| label: ggplot-template-code
-
-ggplot(data = <DATA>,
-       mapping = aes(<VARIABLE MAPPINGS>)) +
-  <GEOM_FUNCTION>()
-```
 
 Let's get started!
 
@@ -191,6 +182,8 @@ It takes a larger cognitive load to read text that is rotated. It is common prac
 ## Ridgeline Plot
 
 ```{r}
+
+library(ggplot2)
 
 ggplot(data = surveys,
        mapping = aes(
