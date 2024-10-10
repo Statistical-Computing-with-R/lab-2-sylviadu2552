@@ -26,6 +26,17 @@ you would like to include, feel free to toss those in the YAML, too!
 
 Next, create a setup code chunk to load the packages and read in the
 `surveys.csv` data file exactly how you did in Lab 2.
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(here)
+ 
+surveys <- read_csv("data/surveys.csv")
+
+#https://www.rdocumentation.org/packages/dplyr/versions/1.0.10/topics/glimpse
+glimpse(surveys)
+```
 
 Finally, create another code chunk and paste in your code from Question 14 or Question 15 in Lab 2 -- we will be modifying the box plot of weights by species!
 
@@ -43,6 +54,9 @@ make use of the `ggridges` package to create side-by-side density (ridge) plots.
 
 ```{r}
 #| label: Ridgeline Plot
+
+library(ggridges)
+
 ggplot(data = surveys,
        mapping = aes(
          x = weight,
